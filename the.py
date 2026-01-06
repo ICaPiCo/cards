@@ -67,6 +67,16 @@ class The:
     def check_win(self):
         for p in self.players.keys():
             print(self.sort_cards(self.players[p][1]+self.cards_on_table))
+        #royal flush ?
+        #straight flush ?
+        #four of a kind ?
+        #full house ?
+        #flush ?
+        #straight ?
+        #three of a kind ?
+        #two pairs ?
+        #pair ?
+        #high card ?
 
     def match(self):
         self.setup()
