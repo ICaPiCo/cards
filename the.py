@@ -9,3 +9,15 @@ Rules:
 - All remaining players reveal their best five-card hand, using all seven available cards.
 - Possible to call (don't add more money) / fold (someone raised) / raise (add more money to the pot) / all in (put all your money in the pot)
 """
+
+class The:
+    def __init__(self):
+        self.players = [[100], [],1]  # First part is money left, second part is current cards, third part is if he decided to play
+        self.deck = [k+s for k in ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"] for s in ["C","S","H","D"]]
+        print(self.deck)
+        self.match()
+
+    def match(self):
+        pass
+
+The()
