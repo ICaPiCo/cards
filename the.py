@@ -19,18 +19,33 @@ class The:
         random.shuffle(self.deck)
         print(self.deck)
         self.betting_done = False
-        self.players = []
-        
+        self.players = {"Alice":[],"Bob":[]}
+        self.setup()
         while not self.betting_done:
             self.betting_done  = self.match() or False
 
+    def setup(self):
+        for player in self.players:
+            self.players[player] = [self.draw_card() for i in range(2)]
+
+    def draw_card(self):
+        return self.deck.pop()
+
     def check_win(self):
 
-
+    def
     def match(self):
+        self.betting()
+        self.flip_cards()
+
+
+
+
         self.flop()
         self.turn()
-        self.river()
+        self.river() # these 3 are 1 function because its just flipping cards
+
+        # if continue return True else False
 
 
 The()
