@@ -15,9 +15,17 @@ class The:
         self.players = [[100], [],1]  # First part is money left, second part is current cards, third part is if he decided to play
         self.deck = [k+s for k in ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"] for s in ["C","S","H","D"]]
         print(self.deck)
-        self.match()
+        self.betting_done = False
+        self.players = []
+        
+        while not self.betting_done:
+            self.betting_done  = self.match() or False
+
+    def check_win(self):
+
 
     def match(self):
         pass
+
 
 The()
