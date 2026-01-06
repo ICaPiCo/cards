@@ -30,20 +30,20 @@ class The:
             self.players[player][1] = [self.draw_card_player() for _ in range(2)]
 
     def do_bets(self):
-        for n,v in self.players.values():
-            print(f"{n}, do your bets! (0: fold, 1: call, 2:raise, 3: all-in)")
+        for n in self.players.keys():
+            print(f"{n}, do your bets! (fold,call,raise,all-in)")
             d = int(input())
-            if d == 0:
+            if d == "fold":
                 self.players[n][2] = 0
-            elif d == 1:
+            elif d == "call":
                 self.players[n][2] = 1
-            elif d == 2:
+            elif d == "raise":
                 self.players[n][2] = 1
                 bet = int(input("How much?: "))
-                self.players[0] -= bet
+                self.players[n][0] -= bet
                 self.pot += bet
                 self.last_raise = bet
-            elif d == 3:
+            elif d == "all-in":
                 alibaba = self.players[0]
                 self.player[2] = 1
                 self.players[0] -= alibaba
