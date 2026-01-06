@@ -16,8 +16,9 @@ class The:
     def __init__(self):
         self.deck = [k+s for k in ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"] for s in ["♣","♠","♡","♢"]]
         random.shuffle(self.deck)
-        print(self.deck)
         self.cards_on_table = []
+        self.pot = 0
+        self.last_raise = 0
         self.players = {"Alice":[100,[],1],"Bob":[100,[],1]} # "John Doe":[money left,[current cards in hand],wants to play]
         self.match()
         self.check_win()
@@ -29,7 +30,26 @@ class The:
             self.players[player][1] = [self.draw_card_player() for _ in range(2)]
 
     def do_bets(self):
-        pass
+        for n,v in self.players.values():
+            print(f"{n}, do your bets! (0: fold, 1: call, 2:raise, 3: all-in)")
+            d = int(input())
+            if d == 0:
+                self.players[n][2] = 0
+            elif d == 1:
+                self.players[n][2] = 1
+            elif d == 2:
+                self.players[n][2] = 1
+                bet = int(input("How much?: "))
+                self.players[0] -= bet
+                self.pot += bet
+                self.last_raise = bet
+            elif d == 3:
+                alibaba = self.players[0]
+                self.player[2] = 1
+                self.players[0] -= alibaba
+                self.pot += alibaba
+                self.last_raise = alibaba
+
 
     def draw_card_player(self):
         card = self.deck[0]
