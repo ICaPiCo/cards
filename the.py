@@ -32,7 +32,7 @@ class The:
     def do_bets(self):
         for n in self.players.keys():
             print(f"{n}, do your bets! (fold,call,raise,all-in)")
-            d = int(input())
+            d = input()
             if d == "fold":
                 self.players[n][2] = 0
             elif d == "call":
@@ -65,13 +65,17 @@ class The:
 
     def match(self):
         self.setup()
+        print(self.players)
         self.do_bets()
         for _ in range(3):
             self.draw_card_on_table()
+        print(*self.cards_on_table)
         self.do_bets()
         self.draw_card_on_table()
+        print(*self.cards_on_table)
         self.do_bets()
         self.draw_card_on_table()
+        print(*self.cards_on_table)
 
 
 The()
