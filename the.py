@@ -21,10 +21,20 @@ class The:
         self.players = {"Alice":[100,[],1],"Bob":[100,[],1]} # "John Doe":[money left,[current cards in hand],wants to play]
         self.match()
         self.check_win()
+        print(self.cards_on_table)
+        print(self.players)
 
     def setup(self):
         for player in self.players:
-            self.players[player] = [self.draw_card() for i in range(2)]
+            self.players[player][1] = [self.draw_card_player() for _ in range(2)]
+
+    def do_bets(self):
+        pass
+
+    def draw_card_player(self):
+        card = self.deck[0]
+        self.deck.pop(0)
+        return card
 
     def draw_card_on_table(self):
         self.cards_on_table.append(self.deck[0])
