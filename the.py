@@ -32,34 +32,15 @@ class The:
         return self.deck.pop()
 
     def check_win(self):
-<<<<<<< Updated upstream
-
-    def
-    def match(self):
-        self.betting()
-        self.flip_cards()
-
-
-
-
-=======
         pass
 
     def match(self):
         self.do_bets()
->>>>>>> Stashed changes
         self.flop()
         self.do_bets()
         self.turn()
-<<<<<<< Updated upstream
-        self.river() # these 3 are 1 function because its just flipping cards
-
-        # if continue return True else False
-=======
         self.do_bets()
         self.river()
->>>>>>> Stashed changes
-
 
 
 The()
