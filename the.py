@@ -15,13 +15,13 @@ import random
 class The:
     def __init__(self):
         self.deck = [k+s for k in ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"] for s in ["♣","♠","♡","♢"]]
+        self.initial_deck = self.deck.copy()
         random.shuffle(self.deck)
         self.cards_on_table = []
         self.pot = 0
         self.last_raise = 0
         self.players = {"Alice":[100,[],1],"Bob":[100,[],1]} # "John Doe":[money left,[current cards in hand],wants to play]
         self.match()
-        self.check_win()
         print(self.cards_on_table)
         print(self.players)
 
@@ -45,7 +45,7 @@ class The:
                 self.last_raise = bet
             elif d == "all-in":
                 alibaba = self.players[n][0]
-                self.player[n][2] = 1
+                self.players[n][2] = 1
                 self.players[n][0] -= alibaba
                 self.pot += alibaba
                 self.last_raise = alibaba
@@ -60,8 +60,13 @@ class The:
         self.cards_on_table.append(self.deck[0])
         self.deck.pop(0)
 
+    def sort_cards(self,cards):
+        cards = sorted(cards, key=self.initial_deck.index, reverse=True)
+        return cards
+
     def check_win(self):
-        pass
+        for p in self.players.keys():
+            print(self.sort_cards(self.players[p][1]+self.cards_on_table))
 
     def match(self):
         self.setup()
@@ -76,6 +81,7 @@ class The:
         self.do_bets()
         self.draw_card_on_table()
         print(*self.cards_on_table)
+        self.check_win()
 
 
 The()
