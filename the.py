@@ -14,33 +14,34 @@ import random
 
 class The:
     def __init__(self):
-        self.players = [[100], [],1]  # First part is money left, second part is current cards, third part is if he decided to play
         self.deck = [k+s for k in ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"] for s in ["♣","♠","♡","♢"]]
         random.shuffle(self.deck)
         print(self.deck)
-        self.betting_done = False
-        self.players = {"Alice":[],"Bob":[]}
-        self.setup()
-        while not self.betting_done:
-            self.betting_done  = self.match() or False
+        self.cards_on_table = []
+        self.players = {"Alice":[100,[],1],"Bob":[100,[],1]} # "John Doe":[money left,[current cards in hand],wants to play]
+        self.match()
+        self.check_win()
 
     def setup(self):
         for player in self.players:
             self.players[player] = [self.draw_card() for i in range(2)]
 
-    def draw_card(self):
-        return self.deck.pop()
+    def draw_card_on_table(self):
+        self.cards_on_table.append(self.deck[0])
+        self.deck.pop(0)
 
     def check_win(self):
         pass
 
     def match(self):
+        self.setup()
         self.do_bets()
-        self.flop()
+        for _ in range(3):
+            self.draw_card_on_table()
         self.do_bets()
-        self.turn()
+        self.draw_card_on_table()
         self.do_bets()
-        self.river()
+        self.draw_card_on_table()
 
 
 The()
