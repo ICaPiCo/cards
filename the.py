@@ -49,7 +49,7 @@ class The:
                 self.players[n][0] -= alibaba
                 self.pot += alibaba
                 self.last_raise = alibaba
-
+            print(f"Pot: {self.pot}")
 
     def draw_card_player(self):
         card = self.deck[0]
@@ -90,6 +90,7 @@ class The:
         print(*self.cards_on_table)
         self.do_bets()
         self.draw_card_on_table()
+        self.do_bets()
         print(*self.cards_on_table)
         self.check_win()
 
