@@ -44,9 +44,9 @@ class The:
                 self.pot += bet
                 self.last_raise = bet
             elif d == "all-in":
-                alibaba = self.players[0]
-                self.player[2] = 1
-                self.players[0] -= alibaba
+                alibaba = self.players[n][0]
+                self.player[n][2] = 1
+                self.players[n][0] -= alibaba
                 self.pot += alibaba
                 self.last_raise = alibaba
 
