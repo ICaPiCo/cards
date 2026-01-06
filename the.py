@@ -16,12 +16,13 @@ class The:
     def __init__(self):
         self.deck = [k+s for k in ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"] for s in ["♣","♠","♡","♢"]]
         random.shuffle(self.deck)
+
         self.cards_on_table = []
+
         self.pot = 0
         self.last_raise = 0
         self.players = {"Alice":[100,[],1],"Bob":[100,[],1]} # "John Doe":[money left,[current cards in hand],wants to play]
         self.match()
-        self.check_win()
         print(self.cards_on_table)
         print(self.players)
 
@@ -45,11 +46,11 @@ class The:
                 self.last_raise = bet
             elif d == "all-in":
                 alibaba = self.players[n][0]
-                self.player[n][2] = 1
+                self.players[n][2] = 1
                 self.players[n][0] -= alibaba
                 self.pot += alibaba
                 self.last_raise = alibaba
-
+            print(f"Pot: {self.pot}")
 
     def draw_card_player(self):
         card = self.deck[0]
@@ -61,7 +62,16 @@ class The:
         self.deck.pop(0)
 
     def check_win(self):
-        pass
+        winner = None
+        for player in self.players:
+            hand  = self.players[player][1]+self.cards_on_table
+        #check for pair / same cards  and number of pairs/same cards -->
+        #check for straight by sorting
+        #check for suit,( check for flush if straight)
+        #special check: royal flush
+
+
+        return winner
 
     def match(self):
         self.setup()
@@ -75,7 +85,9 @@ class The:
         print(*self.cards_on_table)
         self.do_bets()
         self.draw_card_on_table()
+        self.do_bets()
         print(*self.cards_on_table)
+        self.check_win()
 
 
 The()
