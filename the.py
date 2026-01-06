@@ -18,11 +18,19 @@ class The:
         self.deck = [k+s for k in ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"] for s in ["♣","♠","♡","♢"]]
         random.shuffle(self.deck)
         print(self.deck)
-        self.match()
+        self.betting_done = False
+        self.players = []
+        
+        while not self.betting_done:
+            self.betting_done  = self.match() or False
+
+    def check_win(self):
+
 
     def match(self):
         self.flop()
         self.turn()
         self.river()
+
 
 The()
