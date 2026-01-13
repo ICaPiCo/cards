@@ -78,7 +78,7 @@ class Blackjack:
                     self.cpu[2] = 0
 
             if self.ai[2]:
-                key = f"{[sum(self.ai[1])/len(self.ai[1]),sum(self.cpu[1])/len(self.cpu[1])]}"
+                key = f"{[sum(self.ai[1]), sum(self.cpu[1]), len(self.deck)]}"
                 if key in self.training:
                     self.ai[2] = round(self.training.get(key))
                 else:
@@ -94,7 +94,7 @@ class Blackjack:
         #print("Winner:", )
 
     def update_ai_weights(self,wol):
-        key = f"{[sum(self.ai[1]), sum(self.cpu[1])]}"
+        key = f"{[sum(self.ai[1]), sum(self.cpu[1]), len(self.deck)]}"
         if key in self.training:
             if wol == 1:
                 self.training[key] = min(self.training[key] + 0.1, 1)

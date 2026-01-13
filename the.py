@@ -1,15 +1,3 @@
-"""
-Texas Hold'Em
-
-Rules:
-- Every player gets two hole cards.
-- Three communal cards are dealt ('the flop')
-- One more communal card is dealt ('the turn')
-- A final communal card is dealt ('the river')
-- All remaining players reveal their best five-card hand, using all seven available cards.
-- Possible to call (don't add more money) / fold (someone raised) / raise (add more money to the pot) / all in (put all your money in the pot)
-"""
-
 import random
 
 class The:
@@ -19,80 +7,112 @@ class The:
         random.shuffle(self.deck)
         self.cards_on_table = []
         self.pot = 0
-        self.last_raise = 0
-        self.players = {"Alice":[100,[],1],"Bob":[100,[],1]} # "John Doe":[money left,[current cards in hand],wants to play]
+        self.players = {"Alice":[100,[],1,0],"Bob":[100,[],1,0]}
         self.match()
-        print(self.cards_on_table)
-        print(self.players)
+        print(f"Table: {self.cards_on_table}")
+        print(f"Players: {self.players}")
 
     def setup(self):
+        # Reset deck for new match
+        self.deck = self.initial_deck.copy()
+        random.shuffle(self.deck)
+        self.cards_on_table = []
+        self.players = {"Alice":[100,[],1,0],"Bob":[100,[],1,0]}
         for player in self.players:
             self.players[player][1] = [self.draw_card_player() for _ in range(2)]
 
     def do_bets(self):
-        for n in self.players.keys():
-            print(f"{n}, do your bets! (fold,call,raise,all-in)")
-            d = input()
-            if d == "fold":
-                self.players[n][2] = 0
-            elif d == "call":
-                self.players[n][2] = 1
-            elif d == "raise":
-                self.players[n][2] = 1
-                bet = int(input("How much?: "))
-                self.players[n][0] -= bet
-                self.pot += bet
-                self.last_raise = bet
-            elif d == "all-in":
-                alibaba = self.players[n][0]
-                self.players[n][2] = 1
-                self.players[n][0] -= alibaba
-                self.pot += alibaba
-                self.last_raise = alibaba
-            print(f"Pot: {self.pot}")
+        betting_active = True
+        while betting_active:
+            active_players = [p for p in self.players.values() if p[2] != 0]
+            bets = [p[3] for p in active_players]
+
+            changes_made = False
+            for n in self.players.keys():
+                if self.players[n][2] != 0:
+                    current_high = max([p[3] for p in self.players.values()], default=0)
+
+                    # Skip if player already matched the high bet (unless round just started)
+                    if self.players[n][3] == current_high and current_high > 0 and not changes_made:
+                        continue
+
+                    print(f"{n}, Wallet: {self.players[n][0]} | Your Bet: {self.players[n][3]} | High: {current_high}")
+                    d = input("Action (fold/call/raise/all-in): ").strip().lower()
+
+                    if d == "fold":
+                        self.players[n][2] = 0
+
+                    elif d == "call":
+                        diff = current_high - self.players[n][3]
+                        self.players[n][0] -= diff
+                        self.players[n][3] += diff
+
+                    elif d == "raise":
+                        amount = int(input("Amount to ADD on top of current high? "))
+                        total_req = (current_high - self.players[n][3]) + amount
+                        self.players[n][0] -= total_req
+                        self.players[n][3] += total_req
+                        changes_made = True
+
+                    elif d == "all-in":
+                        money = self.players[n][0]
+                        self.players[n][0] = 0
+                        self.players[n][3] += money
+                        changes_made = True
+
+            active_bets = [p[3] for p in self.players.values() if p[2] != 0]
+            if len(active_bets) <= 1 or (len(set(active_bets)) == 1 and not changes_made):
+                betting_active = False
+
+        self.pot += sum([p[3] for p in self.players.values()])
+        print(f"Pot: {self.pot}")
+        for p in self.players.values():
+            p[3] = 0
 
     def draw_card_player(self):
-        card = self.deck[0]
-        self.deck.pop(0)
-        return card
+        return self.deck.pop(0)
 
     def draw_card_on_table(self):
-        self.cards_on_table.append(self.deck[0])
-        self.deck.pop(0)
+        self.cards_on_table.append(self.deck.pop(0))
 
-    def sort_cards(self,cards):
+    def sort_cards(self, cards):
+        # Your original sorting logic
         cards = sorted(cards, key=self.initial_deck.index, reverse=True)
         return cards
 
     def check_win(self):
         for p in self.players.keys():
-            print(self.sort_cards(self.players[p][1]+self.cards_on_table))
-        #royal flush ?
-        #straight flush ?
-        #four of a kind ?
-        #full house ?
-        #flush ?
-        #straight ?
-        #three of a kind ?
-        #two pairs ?
-        #pair ?
-        #high card ?
+            # Shows the sorted 7-card pool for each player
+            hand = self.sort_cards(self.players[p][1] + self.cards_on_table)
+            print(f"{p}'s full hand: {hand}")
+
+            #royal flush ?
+            #straight flush ?
+            #four of a kind ?
+            #full house ?
+            #flush ?
+            #straight ?
+            #three of a kind ?
+            #two pairs ?
+            #pair ?
+            #high card ?
 
     def match(self):
         self.setup()
-        print(self.players)
-        self.do_bets()
-        for _ in range(3):
-            self.draw_card_on_table()
-        print(*self.cards_on_table)
-        self.do_bets()
-        self.draw_card_on_table()
-        print(*self.cards_on_table)
-        self.do_bets()
-        self.draw_card_on_table()
-        self.do_bets()
-        print(*self.cards_on_table)
-        self.check_win()
+        self.do_bets() # Pre-flop
 
+        for _ in range(3): self.draw_card_on_table() # Flop
+        print(f"Flop: {self.cards_on_table}")
+        self.do_bets()
+
+        self.draw_card_on_table() # Turn
+        print(f"Turn: {self.cards_on_table}")
+        self.do_bets()
+
+        self.draw_card_on_table() # River
+        print(f"River: {self.cards_on_table}")
+        self.do_bets()
+
+        self.check_win()
 
 The()
